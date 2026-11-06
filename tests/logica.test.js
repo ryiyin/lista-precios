@@ -3,6 +3,9 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import {
   formatearPrecio,
+  formatearPrecioMayor,
+  textoPrecioMayor,
+  validarPrecioMayor,
   formatearFecha,
   normalizarTexto,
   buscarProductos,
@@ -16,6 +19,38 @@ test('formatearPrecio', () => {
   assert.equal(formatearPrecio(3), 'Bs 3,00');
   // Decisión: sin separador de miles
   assert.equal(formatearPrecio(1250), 'Bs 1250,00');
+});
+
+test('formatearPrecioMayor', () => {
+  assert.equal(formatearPrecioMayor(10, 6), 'Por mayor: Bs 10,00 (desde 6 u.)');
+  assert.equal(formatearPrecioMayor(12.5, 12), 'Por mayor: Bs 12,50 (desde 12 u.)');
+  assert.equal(formatearPrecioMayor(1250, 3), 'Por mayor: Bs 1250,00 (desde 3 u.)');
+});
+
+test('textoPrecioMayor', () => {
+  assert.equal(
+    textoPrecioMayor({ nombre: 'X', categoria: 'A', precio: 12, precioMayor: 10, cantidadMayor: 6 }),
+    'Por mayor: Bs 10,00 (desde 6 u.)',
+  );
+  assert.equal(textoPrecioMayor({ nombre: 'X', categoria: 'A', precio: 12 }), '');
+});
+
+test('validarPrecioMayor', () => {
+  const base = { nombre: 'X', categoria: 'A', precio: 12 };
+  const esValido = (extra) => validarPrecioMayor({ ...base, ...extra }).length === 0;
+  assert.ok(esValido({}));
+  assert.ok(esValido({ precioMayor: 10, cantidadMayor: 6 }));
+  assert.ok(esValido({ precioMayor: 12, cantidadMayor: 6 }));
+  assert.ok(!esValido({ precioMayor: 10 }));
+  for (const c of [6.5, '6', NaN, 0, -2]) {
+    assert.ok(!esValido({ precioMayor: 10, cantidadMayor: c }), String(c));
+  }
+  for (const m of [0, -1, 'diez', NaN, Infinity]) {
+    assert.ok(!esValido({ precioMayor: m, cantidadMayor: 6 }), String(m));
+  }
+  assert.ok(!esValido({ precioMayor: 13, cantidadMayor: 6 }));
+  assert.ok(!esValido({ cantidadMayor: 6 }));
+  assert.equal(typeof validarPrecioMayor({ ...base, precioMayor: 10 })[0], 'string');
 });
 
 test('formatearFecha', () => {
@@ -62,7 +97,11 @@ test('precios.json es válido', () => {
     assert.ok(p.categoria.length > 0);
     assert.equal(typeof p.precio, 'number');
     assert.ok(p.precio > 0);
+    assert.deepEqual(validarPrecioMayor(p), []);
   }
+  const conMayor = datos.productos.filter((p) => p.precioMayor !== undefined);
+  assert.ok(conMayor.length >= 5);
+  for (const p of conMayor) assert.ok(Number.isInteger(p.cantidadMayor));
   const grupos = agruparPorCategoria(datos.productos);
   assert.equal(grupos.length, 4);
   for (const g of grupos) assert.ok(g.productos.length >= 2);
@@ -84,6 +123,18 @@ test('filtro de categoría combinado con búsqueda', () => {
   const r = buscarProductos(filtrarPorCategoria(muestra, 'A'), 'ace');
   assert.deepEqual(r.map((p) => p.nombre), ['Aceite']);
   assert.deepEqual(buscarProductos(filtrarPorCategoria(muestra, 'B'), 'ace'), []);
+});
+
+test('texto de precio por mayor en precios.json', () => {
+  const datos = JSON.parse(readFileSync(new URL('../precios.json', import.meta.url), 'utf8'));
+  for (const p of datos.productos) {
+    if (p.precioMayor !== undefined) {
+      assert.match(textoPrecioMayor(p), /^Por mayor: Bs \d+,\d{2} \(desde \d+ u\.\)$/);
+    } else {
+      assert.equal(textoPrecioMayor(p), '');
+      assert.equal(p.cantidadMayor, undefined);
+    }
+  }
 });
 
 test('precios.json tiene 4 categorías', () => {

@@ -10,6 +10,38 @@ export function formatearPrecio(numero) {
   return 'Bs ' + numero.toFixed(2).replace('.', ',');
 }
 
+// (10, 6) -> "Por mayor: Bs 10,00 (desde 6 u.)"
+export function formatearPrecioMayor(precioMayor, cantidadMayor) {
+  return 'Por mayor: ' + formatearPrecio(precioMayor) + ' (desde ' + cantidadMayor + ' u.)';
+}
+
+// Texto del precio por mayor del producto; '' si no tiene
+export function textoPrecioMayor(producto) {
+  if (producto.precioMayor === undefined) return '';
+  return formatearPrecioMayor(producto.precioMayor, producto.cantidadMayor);
+}
+
+// Devuelve mensajes de error en español; arreglo vacío si es válido
+export function validarPrecioMayor(producto) {
+  const errores = [];
+  const { precio, precioMayor, cantidadMayor } = producto;
+  if (precioMayor === undefined) {
+    if (cantidadMayor !== undefined) errores.push('Hay cantidadMayor sin precioMayor');
+    return errores;
+  }
+  if (typeof precioMayor !== 'number' || !Number.isFinite(precioMayor) || precioMayor <= 0) {
+    errores.push('precioMayor debe ser un número mayor que 0');
+  } else if (precioMayor > precio) {
+    errores.push('precioMayor no puede ser mayor que precio');
+  }
+  if (cantidadMayor === undefined) {
+    errores.push('Falta cantidadMayor');
+  } else if (!Number.isInteger(cantidadMayor) || cantidadMayor <= 0) {
+    errores.push('cantidadMayor debe ser un entero mayor que 0');
+  }
+  return errores;
+}
+
 // "2026-11-06" -> "6 de noviembre de 2026" (sin usar Date, evita zonas horarias)
 export function formatearFecha(textoIso) {
   const [anio, mes, dia] = textoIso.split('-').map(Number);
