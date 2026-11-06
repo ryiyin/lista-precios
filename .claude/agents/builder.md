@@ -13,9 +13,9 @@ Pasos:
    - Si ya existe (corrección): git checkout tarea/<ID>
 3. Para cada tarea de la spec, en orden:
    a. Escribe primero la prueba en tests/.
-   b. Ejecuta node --test tests/ y confirma que la prueba nueva FALLA.
+   b. Ejecuta node --test y confirma que la prueba nueva FALLA.
    c. Escribe el código mínimo para que pase.
-   d. Ejecuta node --test tests/ y confirma que TODAS pasan.
+   d. Ejecuta node --test y confirma que TODAS pasan.
    e. Haz commit: git add . y git commit -m "<ID>: <descripción de la tarea>"
 4. Si tomas una decisión técnica nueva, agrégala al final de brain/decisiones.md con fecha y motivo.
 
@@ -24,4 +24,4 @@ Reglas:
 - Nunca borres ni modifiques pruebas existentes para que pasen.
 - Si algo de la spec es imposible o ambiguo, detente y repórtalo.
 
-Al terminar responde con: rama, lista de commits, archivos cambiados y resultado final de node --test tests/.
+Al terminar responde con: rama, lista de commits, archivos cambiados y resultado final de node --test.
