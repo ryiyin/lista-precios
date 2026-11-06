@@ -1,0 +1,20 @@
+{
+  "actualizado": "2026-11-06",
+  "productos": [
+    { "nombre": "Arroz grano de oro 1 kg", "categoria": "Arroz y fideos", "precio": 8.5 },
+    { "nombre": "Fideo tallarín 400 g", "categoria": "Arroz y fideos", "precio": 5 },
+    { "nombre": "Fideo codito 400 g", "categoria": "Arroz y fideos", "precio": 5 },
+    { "nombre": "Quinua real 500 g", "categoria": "Arroz y fideos", "precio": 18 },
+    { "nombre": "Aceite Fino 900 ml", "categoria": "Aceites y condimentos", "precio": 15.5 },
+    { "nombre": "Azúcar 1 kg", "categoria": "Aceites y condimentos", "precio": 7.5 },
+    { "nombre": "Sal yodada 1 kg", "categoria": "Aceites y condimentos", "precio": 3 },
+    { "nombre": "Comino molido 50 g", "categoria": "Aceites y condimentos", "precio": 4.5 },
+    { "nombre": "Coca-Cola 2 litros", "categoria": "Bebidas", "precio": 14 },
+    { "nombre": "Jugo del Valle 1 litro", "categoria": "Bebidas", "precio": 12.5 },
+    { "nombre": "Agua Vital 2 litros", "categoria": "Bebidas", "precio": 8 },
+    { "nombre": "Leche PIL 1 litro", "categoria": "Lácteos y huevos", "precio": 7.5 },
+    { "nombre": "Yogur PIL 1 litro", "categoria": "Lácteos y huevos", "precio": 16 },
+    { "nombre": "Queso criollo 500 g", "categoria": "Lácteos y huevos", "precio": 28 },
+    { "nombre": "Huevos maple de 30", "categoria": "Lácteos y huevos", "precio": 38 }
+  ]
+}
