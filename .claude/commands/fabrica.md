@@ -28,9 +28,29 @@ Sigue estos pasos en orden, sin saltarte ninguno:
 9. Si el approver responde APROBADO: marca la tarea como "aprobada" en el registro y
    haz commit en la rama: git add fabrica y git commit -m "<ID>: aprobada"
 
-10. Infórmame: ID, rama, rondas de revisión, hallazgos corregidos, hallazgos menores
-    pendientes y resultado final de las pruebas.
+10. DECISIÓN: ejecuta node fabrica/decidir.mjs <ID> y guarda la salida completa.
+11. Usa el subagente evaluador-riesgo con el ID, la ruta de la spec y la salida del script.
+12. El destino es PR si el script O el evaluador dicen PR. Solo es MAIN si ambos dicen MAIN.
+
+13A. Camino MAIN:
+   - En la rama de la tarea, marca el registro como "publicada en main" y haz commit.
+   - git checkout main, luego git pull
+   - git merge --no-ff tarea/<ID> -m "<ID>: merge automático"
+   - Ejecuta node --test. Si alguna prueba falla: git reset --hard ORIG_HEAD
+     y sigue por el camino PR explicando el fallo.
+   - git push origin main
+
+13B. Camino PR:
+   - En la rama de la tarea, marca el registro como "esperando aprobación humana" y haz commit.
+   - git push -u origin tarea/<ID>
+   - gh pr create --base main --head tarea/<ID> --title "<ID>: <tarea resumida>"
+     --body-file fabrica/revisiones/<ID>-ronda-<última ronda>.md
+   - Guarda la URL del PR.
+
+14. Infórmame: ID, destino y por qué, rondas de revisión, hallazgos menores pendientes,
+    y la URL del PR o la confirmación de que se publicó en main.
 
 Reglas:
 - Tú no escribes código ni revisas. Todo lo hacen los subagentes.
-- Nunca hagas merge a main ni push. Eso se decide en la siguiente etapa.
+- Solo haces push a main en el camino 13A. Nunca hagas merge de un PR:
+  los PR los aprueba Rodrigo en GitHub.
