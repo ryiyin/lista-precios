@@ -15,6 +15,7 @@
 - Motivo: estructura simple de editar a mano y de probar; la lógica de formato vive en logica.js.
 
 ## 2026-11-06 · Precio por mayor en precios.json
-- Decisión: cada producto tiene además `precioMayor` (número en bolivianos, obligatorio, sin cantidad mínima). Se muestra como "Por mayor: Bs 10,00" debajo del precio normal.
-- Motivo: el market vende por mayor y el cliente quiere ver ambos precios antes de ir.
-- Aprobado por Rodrigo.
+- Decisión: cada producto puede tener `precioMayor` (número en bolivianos, opcional) y `cantidadMayor` (entero, obligatorio si hay `precioMayor`). Se muestra como "Por mayor: Bs 10,00 (desde 6 u.)" debajo del precio normal; si no hay `precioMayor`, no se muestra la línea.
+- Reglas de validación (validarPrecioMayor en logica.js): `precioMayor` número finito > 0 y `precioMayor <= precio` (se permite igualdad); `cantidadMayor` entero > 0; `cantidadMayor` sin `precioMayor` es inválido.
+- Motivo: Se agregan precios por mayor para clientes que compran en cantidad.
+- Aprobado por Rodrigo. (Las reglas `precioMayor <= precio` y `cantidadMayor` huérfano son supuestos pendientes de confirmar.)

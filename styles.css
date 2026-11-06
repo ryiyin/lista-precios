@@ -38,7 +38,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 li { display: flex; justify-content: space-between; gap: 1rem; padding: .6rem 0; border-bottom: 1px solid #ddd; }
 .precios { display: flex; flex-direction: column; align-items: flex-end; }
 .precio { text-align: right; font-weight: 600; white-space: nowrap; }
-.precio-mayor { font-size: .9rem; font-weight: 400; color: #555; white-space: nowrap; }
+.precio-mayor { font-size: .9rem; font-weight: 400; color: #555; text-align: right; }
 @media (min-width: 700px) {
   body { font-size: 1.2rem; }
 }
