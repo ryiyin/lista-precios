@@ -18,6 +18,20 @@ h1 { margin: 0 0 .25rem; font-size: 1.6rem; }
   border: 2px solid #999;
   border-radius: .5rem;
 }
+#filtros { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+#filtros button {
+  min-height: 44px;
+  padding: .4rem 1rem;
+  font: inherit;
+  font-size: 1rem;
+  color: #1b5e20;
+  background: #fff;
+  border: 2px solid #1b5e20;
+  border-radius: 2rem;
+  cursor: pointer;
+}
+#filtros button.activo { color: #fff; background: #1b5e20; font-weight: 700; }
+#filtros button:focus-visible { outline: 3px solid #f9a825; outline-offset: 2px; }
 #mensaje { margin: 1rem 0; padding: .8rem; background: #fff3cd; border-radius: .5rem; }
 h2 { margin: 1.5rem 0 .5rem; font-size: 1.2rem; color: #1b5e20; border-bottom: 2px solid #1b5e20; }
 ul { list-style: none; margin: 0; padding: 0; }

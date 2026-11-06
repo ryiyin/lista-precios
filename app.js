@@ -1,11 +1,48 @@
-import { formatearPrecio, formatearFecha, buscarProductos, agruparPorCategoria } from './logica.js';
+import {
+  formatearPrecio,
+  formatearFecha,
+  buscarProductos,
+  agruparPorCategoria,
+  obtenerCategorias,
+  filtrarPorCategoria,
+} from './logica.js';
 
 const lista = document.getElementById('lista');
 const mensaje = document.getElementById('mensaje');
 const buscador = document.getElementById('buscador');
 const fecha = document.getElementById('fechaActualizacion');
 
+const filtros = document.getElementById('filtros');
+
 let productos = [];
+let categoriaActiva = 'Todas';
+
+// Filtra por categoría y luego por texto del buscador
+function actualizarVista() {
+  const porCategoria = filtrarPorCategoria(productos, categoriaActiva);
+  mostrar(buscarProductos(porCategoria, buscador.value));
+}
+
+function crearBotones() {
+  filtros.replaceChildren();
+  for (const categoria of ['Todas', ...obtenerCategorias(productos)]) {
+    const boton = document.createElement('button');
+    boton.type = 'button';
+    boton.textContent = categoria;
+    boton.addEventListener('click', () => {
+      categoriaActiva = categoria;
+      for (const b of filtros.children) {
+        const activo = b === boton;
+        b.setAttribute('aria-pressed', String(activo));
+        b.classList.toggle('activo', activo);
+      }
+      actualizarVista();
+    });
+    boton.setAttribute('aria-pressed', String(categoria === categoriaActiva));
+    boton.classList.toggle('activo', categoria === categoriaActiva);
+    filtros.append(boton);
+  }
+}
 
 function mostrarMensaje(texto) {
   mensaje.textContent = texto;
@@ -40,12 +77,13 @@ async function iniciar() {
     const datos = await respuesta.json();
     productos = datos.productos;
     fecha.textContent = 'Última actualización: ' + formatearFecha(datos.actualizado);
-    mostrar(productos);
+    crearBotones();
+    actualizarVista();
   } catch {
     buscador.disabled = true;
     mostrarMensaje('No se pudo cargar la lista de precios. Intenta de nuevo más tarde.');
   }
 }
 
-buscador.addEventListener('input', () => mostrar(buscarProductos(productos, buscador.value)));
+buscador.addEventListener('input', actualizarVista);
 iniciar();
