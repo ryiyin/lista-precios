@@ -25,3 +25,8 @@ Reglas:
 - Si algo de la spec es imposible o ambiguo, detente y repórtalo.
 
 Al terminar responde con: rama, lista de commits, archivos cambiados y resultado final de node --test.
+
+## Correcciones del approver
+Si recibes una lista de correcciones, trabaja en la misma rama tarea/<ID>.
+Aplica cada corrección con el mismo ciclo: prueba que falla (si cambia comportamiento),
+código, pruebas pasando y commit con el mensaje "<ID>: corrección - <descripción>".
