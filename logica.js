@@ -39,3 +39,14 @@ export function agruparPorCategoria(productos) {
   }
   return grupos;
 }
+
+// Categorías únicas en orden de aparición
+export function obtenerCategorias(productos) {
+  return [...new Set(productos.map((p) => p.categoria))];
+}
+
+// categoria null o "Todas" devuelve todos los productos
+export function filtrarPorCategoria(productos, categoria) {
+  if (categoria === null || categoria === 'Todas') return productos;
+  return productos.filter((p) => p.categoria === categoria);
+}
