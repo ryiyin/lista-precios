@@ -10,6 +10,11 @@ export function formatearPrecio(numero) {
   return 'Bs ' + numero.toFixed(2).replace('.', ',');
 }
 
+// 10 -> "Por mayor: Bs 10,00"
+export function formatearPrecioMayor(numero) {
+  return 'Por mayor: ' + formatearPrecio(numero);
+}
+
 // "2026-11-06" -> "6 de noviembre de 2026" (sin usar Date, evita zonas horarias)
 export function formatearFecha(textoIso) {
   const [anio, mes, dia] = textoIso.split('-').map(Number);

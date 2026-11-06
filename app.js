@@ -1,5 +1,6 @@
 import {
   formatearPrecio,
+  formatearPrecioMayor,
   formatearFecha,
   buscarProductos,
   agruparPorCategoria,
@@ -60,10 +61,16 @@ function mostrar(listaProductos) {
       const li = document.createElement('li');
       const nombre = document.createElement('span');
       nombre.textContent = p.nombre;
+      const precios = document.createElement('span');
+      precios.className = 'precios';
       const precio = document.createElement('span');
       precio.className = 'precio';
       precio.textContent = formatearPrecio(p.precio);
-      li.append(nombre, precio);
+      const precioMayor = document.createElement('span');
+      precioMayor.className = 'precio-mayor';
+      precioMayor.textContent = formatearPrecioMayor(p.precioMayor);
+      precios.append(precio, precioMayor);
+      li.append(nombre, precios);
       ul.append(li);
     }
     lista.append(titulo, ul);

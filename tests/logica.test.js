@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import {
   formatearPrecio,
+  formatearPrecioMayor,
   formatearFecha,
   normalizarTexto,
   buscarProductos,
@@ -16,6 +17,12 @@ test('formatearPrecio', () => {
   assert.equal(formatearPrecio(3), 'Bs 3,00');
   // Decisión: sin separador de miles
   assert.equal(formatearPrecio(1250), 'Bs 1250,00');
+});
+
+test('formatearPrecioMayor', () => {
+  assert.equal(formatearPrecioMayor(10), 'Por mayor: Bs 10,00');
+  assert.equal(formatearPrecioMayor(12.5), 'Por mayor: Bs 12,50');
+  assert.equal(formatearPrecioMayor(1250), 'Por mayor: Bs 1250,00');
 });
 
 test('formatearFecha', () => {
@@ -62,6 +69,9 @@ test('precios.json es válido', () => {
     assert.ok(p.categoria.length > 0);
     assert.equal(typeof p.precio, 'number');
     assert.ok(p.precio > 0);
+    assert.equal(typeof p.precioMayor, 'number');
+    assert.ok(p.precioMayor > 0);
+    assert.ok(p.precioMayor <= p.precio);
   }
   const grupos = agruparPorCategoria(datos.productos);
   assert.equal(grupos.length, 4);
@@ -84,6 +94,13 @@ test('filtro de categoría combinado con búsqueda', () => {
   const r = buscarProductos(filtrarPorCategoria(muestra, 'A'), 'ace');
   assert.deepEqual(r.map((p) => p.nombre), ['Aceite']);
   assert.deepEqual(buscarProductos(filtrarPorCategoria(muestra, 'B'), 'ace'), []);
+});
+
+test('todos los productos producen texto de precio por mayor válido', () => {
+  const datos = JSON.parse(readFileSync(new URL('../precios.json', import.meta.url), 'utf8'));
+  for (const p of datos.productos) {
+    assert.match(formatearPrecioMayor(p.precioMayor), /^Por mayor: Bs \d+,\d{2}$/);
+  }
 });
 
 test('precios.json tiene 4 categorías', () => {
