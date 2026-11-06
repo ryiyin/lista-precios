@@ -31,6 +31,8 @@ Sigue estos pasos en orden, sin saltarte ninguno:
 10. DECISIÓN: ejecuta node fabrica/decidir.mjs <ID> y guarda la salida completa.
 11. Usa el subagente evaluador-riesgo con el ID, la ruta de la spec y la salida del script.
 12. El destino es PR si el script O el evaluador dicen PR. Solo es MAIN si ambos dicen MAIN.
+    Guarda en fabrica/revisiones/<ID>-decision.md: la salida completa del script,
+    la respuesta del evaluador y el destino final. Debe quedar incluido en el commit del paso 13.
 
 13A. Camino MAIN:
    - En la rama de la tarea, marca el registro como "publicada en main" y haz commit.
