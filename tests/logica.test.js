@@ -7,6 +7,8 @@ import {
   normalizarTexto,
   buscarProductos,
   agruparPorCategoria,
+  obtenerCategorias,
+  filtrarPorCategoria,
 } from '../logica.js';
 
 test('formatearPrecio', () => {
@@ -64,4 +66,27 @@ test('precios.json es válido', () => {
   const grupos = agruparPorCategoria(datos.productos);
   assert.equal(grupos.length, 4);
   for (const g of grupos) assert.ok(g.productos.length >= 2);
+});
+
+test('obtenerCategorias', () => {
+  assert.deepEqual(obtenerCategorias(muestra), ['A', 'B']);
+  assert.deepEqual(obtenerCategorias([]), []);
+});
+
+test('filtrarPorCategoria', () => {
+  assert.deepEqual(filtrarPorCategoria(muestra, 'A').map((p) => p.nombre), ['Azúcar blanca', 'Aceite']);
+  assert.equal(filtrarPorCategoria(muestra, null).length, 3);
+  assert.equal(filtrarPorCategoria(muestra, 'Todas').length, 3);
+  assert.deepEqual(filtrarPorCategoria(muestra, 'Z'), []);
+});
+
+test('filtro de categoría combinado con búsqueda', () => {
+  const r = buscarProductos(filtrarPorCategoria(muestra, 'A'), 'ace');
+  assert.deepEqual(r.map((p) => p.nombre), ['Aceite']);
+  assert.deepEqual(buscarProductos(filtrarPorCategoria(muestra, 'B'), 'ace'), []);
+});
+
+test('precios.json tiene 4 categorías', () => {
+  const datos = JSON.parse(readFileSync(new URL('../precios.json', import.meta.url), 'utf8'));
+  assert.equal(obtenerCategorias(datos.productos).length, 4);
 });
