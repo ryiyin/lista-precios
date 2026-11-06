@@ -13,6 +13,8 @@ Sigue estos pasos en orden, sin saltarte ninguno:
    Si spec-writer reporta que la tarea contradice el brain, detente y avísame.
 4. Usa el subagente builder. Pásale el ID y la ruta de la spec.
 5. Actualiza la fila en fabrica/registro.md con el estado "construida" y el nombre de la rama.
+   Luego, en la rama de la tarea, haz commit de la spec y el registro:
+   git add specs fabrica y git commit -m "<ID>: spec y registro"
 6. Infórmame: ID, rama, archivos cambiados y resultado de las pruebas.
 
 Reglas:
